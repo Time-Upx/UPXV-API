@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
 using UPXV.Common;
+using UPXV.Common.Extensions;
 using UPXV.Common.Page;
 using UPXV.Data;
 using UPXV.Data.Repositories;
@@ -25,7 +26,7 @@ public sealed class ConsumableService
 
    public Result<ConsumableDetailDTO, Exception> Create (ConsumableCreateDTO dto)
    {
-      if (_repository.DoesValueExists(dto.Tid, e => e.Tid))
+      if (_repository.FindBy(c => c.Tid == dto.Tid) is not null)
       {
          var failure = new ValidationFailure(nameof(dto.Tid), "O identificador desejado já foi utilizado", dto.Tid);
          return new ValidationException([failure]);
@@ -47,12 +48,13 @@ public sealed class ConsumableService
       _repository.Save();
 
       _repository.Load(consumable, c => c.Unit);
+
       return ConsumableDetailDTO.Of(consumable);
    }
 
    public Result<ConsumableDetailDTO, Exception> Update (ConsumableUpdateDTO dto)
    {
-      if (_repository.DoesValueExists(dto.Tid, e => e.Tid))
+      if (_repository.FindBy(c => c.Nid != dto.Nid && c.Tid == dto.Tid) is not null)
       {
          ValidationFailure failure = new ValidationFailure(
             nameof(dto.Tid), "O identificador desejado já foi utilizado", dto.Tid);
@@ -75,7 +77,7 @@ public sealed class ConsumableService
       if (!validationResult.IsValid)
          return new ValidationException(validationResult.Errors);
 
-      _repository.Create(consumable);
+      _repository.Update(consumable);
       _repository.Save();
 
       _repository.Load(consumable, c => c.Unit);
@@ -88,6 +90,7 @@ public sealed class ConsumableService
       Consumable? consumable = _repository.FindByNid(nid);
       if (consumable is null) return new EntityNotFoundException<Consumable>(nid);
 
+      _repository.Load(consumable, c => c.Unit);
       _repository.Delete(consumable);
       _repository.Save();
 
@@ -102,7 +105,10 @@ public sealed class ConsumableService
 
       ICollection<Consumable> entities = _repository.ReadQuery(query);
 
-      IPage<ConsumableListDTO> page = entities.Select(ConsumableListDTO.Of).ToPage(pageSize);
+      IPage<ConsumableListDTO> page = entities
+         .Peek(consumable => _repository.Load(consumable, c => c.Unit))
+         .Select(ConsumableListDTO.Of)
+         .ToPage(pageSize);
 
       return PageDTO<ConsumableListDTO>.Of(page);
    }
@@ -114,6 +120,9 @@ public sealed class ConsumableService
       {
          return new EntityNotFoundException<Consumable>(nid);
       }
+
+      _repository.Load(consumable, c => c.Unit);
+
       return ConsumableDetailDTO.Of(consumable);
    }
 }

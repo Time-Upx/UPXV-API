@@ -20,17 +20,21 @@ public sealed class ItemService
 
    public PageDTO<ItemListDTO> List (int pageIndex, int pageSize)
    {
-      PageDTO<Consumable> consumablesDto = new PageDTO<Consumable>(pageIndex, pageSize);
-      Query<Consumable> consumableQuery = new Query<Consumable>(consumablesDto);
-      ICollection<Consumable> consumables = _consumableRepository.ReadQuery(consumableQuery);
+      ICollection<Consumable> consumables = _consumableRepository.ReadQuery(
+         new Query<Consumable>().Include(c => c.Unit));
 
-      PageDTO<Patrimony> patrimoniesDto = new PageDTO<Patrimony>(pageIndex, pageSize);
-      Query<Patrimony> patrimonyQuery = new Query<Patrimony>(patrimoniesDto);
-      ICollection<Patrimony> patrimonies = _consumableRepository.ReadQuery(patrimonyQuery);
+      ICollection<Patrimony> patrimonies = _consumableRepository.ReadQuery(
+         new Query<Patrimony>().Include(p => p.Status));
 
-      IEnumerable<ItemListDTO> items = consumables.Select(ItemListDTO.Of)
+      IEnumerable<ItemListDTO> items = consumables
+         .Select(ItemListDTO.Of)
          .Concat(patrimonies.Select(ItemListDTO.Of))
-         .Shuffle();
+         .OrderBy(i =>
+         {
+            if (i.Consumable is not null) return i.Consumable.Tid;
+            if (i.Patrimony is not null) return i.Patrimony.Tid;
+            return "";
+         });
 
       return new PageDTO<ItemListDTO>(items, pageIndex, pageSize);
    }

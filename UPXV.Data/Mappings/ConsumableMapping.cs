@@ -9,7 +9,7 @@ public class ConsumableMapping : IEntityTypeConfiguration<Consumable>
    public void Configure (EntityTypeBuilder<Consumable> builder)
    {
       builder.HasKey(c => c.Nid);
-      builder.HasAlternateKey(c => c.Tid);
+      builder.HasIndex(c => c.Tid).IsUnique();
 
       builder.HasMany(c => c.Tags)
          .WithMany();

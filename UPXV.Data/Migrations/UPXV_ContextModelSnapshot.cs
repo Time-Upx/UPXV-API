@@ -75,7 +75,8 @@ namespace UPXV.Data.Migrations
 
                     b.HasKey("Nid");
 
-                    b.HasAlternateKey("Tid");
+                    b.HasIndex("Tid")
+                        .IsUnique();
 
                     b.HasIndex("UnitNid");
 

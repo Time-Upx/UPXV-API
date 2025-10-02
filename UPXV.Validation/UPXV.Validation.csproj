@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\UPXV.Entities\UPXV.Entities.csproj" />
     <ProjectReference Include="..\UPXV.Models\UPXV.Entities.csproj" />
   </ItemGroup>
 

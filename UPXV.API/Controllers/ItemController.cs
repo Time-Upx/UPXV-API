@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using UPXV.Services;
 
-namespace UPXV_API;
+namespace UPXV_API.Controllers;
 
 [ApiController]
 [Route("[controller]")]

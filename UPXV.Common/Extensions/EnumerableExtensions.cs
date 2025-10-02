@@ -1,4 +1,6 @@
-﻿namespace UPXV.Common.Extensions;
+﻿using System.Data;
+
+namespace UPXV.Common.Extensions;
 
 public static class EnumerableExtensions
 {
@@ -9,6 +11,11 @@ public static class EnumerableExtensions
       .Select(mapper)
       .Where(r => r is not null)
       .ToList()!;
+
+   public static IEnumerable<T> Paging<T>(this IEnumerable<T> enumerable, int index, int size)
+   {
+      return enumerable.Skip(size * index).Take(size);
+   }
 
    public static IEnumerable<T> Peek<T> (this IEnumerable<T> enumerable, Action<T> action)
       => enumerable.Select(i =>

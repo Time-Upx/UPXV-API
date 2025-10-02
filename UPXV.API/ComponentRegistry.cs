@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using UPCV.Validation;
 using UPXV.Data.Repositories;
 using UPXV.Models;
 using UPXV.Services;

@@ -7,7 +7,7 @@ using UPXV.Models;
 using UPXV.Services;
 using UPXV.Services.Exceptions;
 
-namespace UPXV_API;
+namespace UPXV_API.Controllers;
 
 [ApiController]
 [Route("[controller]")]

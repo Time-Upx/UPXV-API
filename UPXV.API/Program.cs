@@ -1,9 +1,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using UPXV.Data;
-using UPXV_API;
 
-namespace UPXV.Api;
+namespace UPXV_API;
 
 public class Program
 {

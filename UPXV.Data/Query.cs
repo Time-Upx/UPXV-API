@@ -35,6 +35,12 @@ public record Query<TEntity> where TEntity : class
       _take = take;
       return this;
    }
+   public Query<TEntity> Paging(int index, int size)
+   {
+      _skip = index * size;
+      _take = size;
+      return this;
+   }
    public Query<TEntity> AsNoTracking ()
    {
       _asNoTracking = true;

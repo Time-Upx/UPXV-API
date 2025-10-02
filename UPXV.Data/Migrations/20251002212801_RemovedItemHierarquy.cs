@@ -45,6 +45,10 @@ namespace UPXV.Data.Migrations
                 name: "IX_Patrimonies_ItemNid",
                 table: "Patrimonies");
 
+            migrationBuilder.DropUniqueConstraint(
+                name: "AK_Consumables_Tid",
+                table: "Consumables");
+
             migrationBuilder.DropIndex(
                 name: "IX_Consumables_ItemNid",
                 table: "Consumables");
@@ -192,6 +196,12 @@ namespace UPXV.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Consumables_Tid",
+                table: "Consumables",
+                column: "Tid",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ConsumableTag_TagsNid",
                 table: "ConsumableTag",
                 column: "TagsNid");
@@ -230,6 +240,10 @@ namespace UPXV.Data.Migrations
             migrationBuilder.DropIndex(
                 name: "IX_Patrimonies_Tid",
                 table: "Patrimonies");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Consumables_Tid",
+                table: "Consumables");
 
             migrationBuilder.DropColumn(
                 name: "Description",
@@ -335,6 +349,11 @@ namespace UPXV.Data.Migrations
             migrationBuilder.AddUniqueConstraint(
                 name: "AK_Patrimonies_Tid",
                 table: "Patrimonies",
+                column: "Tid");
+
+            migrationBuilder.AddUniqueConstraint(
+                name: "AK_Consumables_Tid",
+                table: "Consumables",
                 column: "Tid");
 
             migrationBuilder.CreateTable(

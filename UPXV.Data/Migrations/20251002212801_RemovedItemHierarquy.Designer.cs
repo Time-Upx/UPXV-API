@@ -12,7 +12,7 @@ using UPXV.Data;
 namespace UPXV.Data.Migrations
 {
     [DbContext(typeof(UPXV_Context))]
-    [Migration("20250928015801_RemovedItemHierarquy")]
+    [Migration("20251002212801_RemovedItemHierarquy")]
     partial class RemovedItemHierarquy
     {
         /// <inheritdoc />
@@ -78,7 +78,8 @@ namespace UPXV.Data.Migrations
 
                     b.HasKey("Nid");
 
-                    b.HasAlternateKey("Tid");
+                    b.HasIndex("Tid")
+                        .IsUnique();
 
                     b.HasIndex("UnitNid");
 
